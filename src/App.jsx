@@ -2,6 +2,8 @@ import React from "react"
 import { hot } from "react-hot-loader"
 
 import { Layout } from "./components/Layout"
+
+// import global style
 import "./style/global.scss"
 
 class App extends React.Component {
