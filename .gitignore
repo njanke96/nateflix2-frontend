@@ -89,3 +89,6 @@ typings/
 
 # built files
 dist/
+
+# nateflix user config
+nateflix.config.js

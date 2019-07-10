@@ -1,6 +1,14 @@
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const nfConfig = require("./nateflix.config")
+
+/* get the definitions for the define plugin from our config json */
+function getGlobalDefinitions() {
+    return {
+        SERVICE_URL: JSON.stringify(nfConfig.serviceUrl)
+    }
+}
 
 module.exports = {
     entry: "./src/index.js",
@@ -49,6 +57,7 @@ module.exports = {
         hotOnly: true
     },
     plugins: [
+        new webpack.DefinePlugin(getGlobalDefinitions()),
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
             template: "src/index.html"
