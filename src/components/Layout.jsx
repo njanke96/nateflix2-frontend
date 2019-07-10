@@ -5,7 +5,7 @@ export class Layout extends React.Component {
         super(props)
         this.state = {
             // must be set when the user login status changes
-            loggedIn: false
+            loggedIn: true
         }
     }
 
@@ -13,6 +13,12 @@ export class Layout extends React.Component {
         return (
             <div>
                 <Navbar loggedIn={this.state.loggedIn}/>
+                <div className="container">
+                    <section className="section main-section">
+                        This is the main section
+                        <a href="/">This is a test link.</a>
+                    </section>
+                </div>
             </div>
         )
     }
@@ -43,7 +49,7 @@ class Navbar extends React.Component {
         }
 
         return (
-            <nav className="navbar is-primary" role="navigation" aria-label="main navigation">
+            <nav className="navbar is-info" role="navigation" aria-label="main navigation">
                 <div className="navbar-brand">
                     <div className="navbar-item is-size-4">nateflix</div>
                     
@@ -67,8 +73,8 @@ class Navbar extends React.Component {
                     <div className="navbar-start">
                         {
                             this.props.loggedIn && [
-                                <a className="navbar-item">Home</a>,
-                                <a className="navbar-item">Movies</a>
+                                <a className="navbar-item" key="home">Home</a>,
+                                <a className="navbar-item" key="movies">Movies</a>
                             ]
                         }
                         
@@ -79,7 +85,7 @@ class Navbar extends React.Component {
                             <div className="buttons">
                                 {
                                     this.props.loggedIn &&
-                                    <a className="button is-secondary">Log out</a>  
+                                    <a className="button is-light">Log out</a>  
                                 }        
                             </div>
                         </div>

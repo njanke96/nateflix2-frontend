@@ -1,2 +1,38 @@
 /* bulma variables */
+@import "~bulma/sass/utilities/initial-variables";
+
+// customization
+$primary: $orange;
+$info: $orange;
+$text: $white-ter;
+$link: $info;
+$link-hover: $info;
+$link-focus-border: $info;
+$link-visited: $primary;
+$background: $black-ter;
+$background-grey: hsl(0, 0%, 18%);
+$body-background-color: $background-grey;
+
+// navbar (does not work?)
+$navbar-dropdown-background-color: $background-grey;
+
 @import "~bulma";
+
+// manually set navbar menu styles
+.navbar-menu.is-active {
+    background-color: $background-grey;
+}
+
+.navbar-item {
+    color: $white;
+}
+
+// main section
+.section.main-section {
+    background-color: $grey-darker;
+}
+
+// link hover underlining
+a:hover {
+    text-decoration: underline;
+}
