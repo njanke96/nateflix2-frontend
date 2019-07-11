@@ -54,7 +54,12 @@ module.exports = {
     devServer: {
         contentBase: path.join(__dirname, "dist"),
         port: 3000,
-        hotOnly: true
+        hotOnly: true,
+        historyApiFallback: {
+            rewrites: [
+                { from: /^\/$/, to: '/index.html' }
+            ]
+        }
     },
     plugins: [
         new webpack.DefinePlugin(getGlobalDefinitions()),
