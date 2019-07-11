@@ -1,5 +1,5 @@
 import React from "react"
-import {BrowserRouter} from "react-router-dom"
+import {BrowserRouter, Link} from "react-router-dom"
 import Routes from "./Routes"
 
 export class Layout extends React.Component {
@@ -56,7 +56,6 @@ class Navbar extends React.Component {
                     
                     {/* hidden button for dropdown on mobile*/}
                     {
-                        this.props.loggedIn && 
                         <a role="button" className={burgerButtonClass}
                         aria-label="menu" 
                         aria-expanded="false" 
@@ -72,11 +71,10 @@ class Navbar extends React.Component {
 
                 <div id="topNavbar" className={navMenuClass}>
                     <div className="navbar-start">
+                        <Link to="/" className="navbar-item">Home</Link>
                         {
-                            this.props.loggedIn && [
-                                <a className="navbar-item" key="home">Home</a>,
-                                <a className="navbar-item" key="movies">Movies</a>
-                            ]
+                            this.props.loggedIn &&
+                            <Link to="/movies" className="navbar-item">Movies</Link>
                         }
                         
                     </div>
@@ -86,7 +84,7 @@ class Navbar extends React.Component {
                             <div className="buttons">
                                 {
                                     this.props.loggedIn &&
-                                    <a className="button is-light">Log out</a>  
+                                    <button className="button is-light">Log out</button>  
                                 }        
                             </div>
                         </div>
