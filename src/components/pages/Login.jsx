@@ -1,5 +1,6 @@
 /* Login page shown whenever a login is required */
 import React from "react"
+import {Link} from "react-router-dom"
 
 export default class Login extends React.Component {
     render() {
@@ -21,7 +22,7 @@ export default class Login extends React.Component {
                         </div>
                     </div>
                     <div className="field is-grouped">
-                        <a href="/">Forgot your password?</a>
+                        <Link to="/forgot-password">Forgot your password?</Link>
                         <p className="control pushed-control">
                             <button className="button is-primary">Login</button>
                         </p>

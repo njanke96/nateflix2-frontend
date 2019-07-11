@@ -1,5 +1,6 @@
 import React from "react"
-import Login from "./pages/Login"
+import {BrowserRouter} from "react-router-dom"
+import Routes from "./Routes"
 
 export class Layout extends React.Component {
     constructor(props) {
@@ -12,14 +13,14 @@ export class Layout extends React.Component {
 
     render() {
         return (
-            <div>
+            <BrowserRouter>
                 <Navbar loggedIn={this.state.loggedIn}/>
                 <div className="container">
                     <section className="section main-section">
-                        <Login />
+                        <Routes />
                     </section>
                 </div>
-            </div>
+            </BrowserRouter>
         )
     }
 }
