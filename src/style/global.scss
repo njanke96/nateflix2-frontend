@@ -1,3 +1,6 @@
+/* global styles packed to bundle */
+@import "mixins";
+
 /* bulma variables */
 @import "~bulma/sass/utilities/initial-variables";
 
@@ -5,6 +8,7 @@
 $primary: $orange;
 $info: $orange;
 $text: $white-ter;
+$title-color: $white-ter;
 $link: $info;
 $link-hover: $info;
 $link-focus-border: $info;
@@ -33,6 +37,12 @@ $navbar-dropdown-background-color: $background-grey;
 }
 
 // link hover underlining
-a:hover {
+section > a:hover {
     text-decoration: underline;
+}
+
+// nateflix logo
+.nf-logo {
+    cursor: default;
+    @include user-select(none);
 }

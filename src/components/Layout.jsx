@@ -15,8 +15,8 @@ export class Layout extends React.Component {
                 <Navbar loggedIn={this.state.loggedIn}/>
                 <div className="container">
                     <section className="section main-section">
-                        This is the main section
-                        <a href="/">This is a test link.</a>
+                        <h1 className="title">Login</h1>
+                        <a href="/">This is a link</a>
                     </section>
                 </div>
             </div>
@@ -51,7 +51,7 @@ class Navbar extends React.Component {
         return (
             <nav className="navbar is-info" role="navigation" aria-label="main navigation">
                 <div className="navbar-brand">
-                    <div className="navbar-item is-size-4">nateflix</div>
+                    <div className="navbar-item is-size-4 nf-logo">nateflix</div>
                     
                     {/* hidden button for dropdown on mobile*/}
                     {
