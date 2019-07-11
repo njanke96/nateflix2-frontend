@@ -1,11 +1,12 @@
 import React from "react"
+import Login from "./pages/Login"
 
 export class Layout extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             // must be set when the user login status changes
-            loggedIn: true
+            loggedIn: false
         }
     }
 
@@ -15,8 +16,7 @@ export class Layout extends React.Component {
                 <Navbar loggedIn={this.state.loggedIn}/>
                 <div className="container">
                     <section className="section main-section">
-                        <h1 className="title">Login</h1>
-                        <a href="/">This is a link</a>
+                        <Login />
                     </section>
                 </div>
             </div>

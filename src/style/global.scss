@@ -8,7 +8,8 @@
 $primary: $orange;
 $info: $orange;
 $text: $white-ter;
-$title-color: $white-ter;
+$title-color: $text;
+$subtitle-color: $text;
 $link: $info;
 $link-hover: $info;
 $link-focus-border: $info;
@@ -19,6 +20,13 @@ $body-background-color: $background-grey;
 
 // navbar (does not work?)
 $navbar-dropdown-background-color: $background-grey;
+
+// forms
+$label-color: $text;
+$input-color: $text;
+$input-border-color: $grey-darker;
+$input-hover-border-color: $grey-darker;
+$input-background-color: $background-grey;
 
 @import "~bulma";
 
@@ -45,4 +53,9 @@ section > a:hover {
 .nf-logo {
     cursor: default;
     @include user-select(none);
+}
+
+// pushes controls in a grouped flexbox to the right
+.pushed-control {
+    margin-left: auto;
 }
