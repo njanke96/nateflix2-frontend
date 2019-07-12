@@ -63,3 +63,8 @@ section > a:hover {
 .splitter {
     margin-bottom: 2rem;
 }
+
+.is-centered {
+    display: flex;
+    justify-content: center;
+}

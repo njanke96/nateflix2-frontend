@@ -1,7 +1,8 @@
 import React from "react"
+import BasePage from "./BasePage"
 
-export default class PasswordRecover extends React.Component {
-    render() {
+export default class PasswordRecover extends BasePage {
+    pageRender() {
         return (
             <div>
                 <h1 className="title">Password Recovery</h1>

@@ -1,9 +1,10 @@
 /* Login page shown whenever a login is required */
-import React from "react"
 import {Link} from "react-router-dom"
+import React from "react"
+import BasePage from "./BasePage"
 
-export default class Login extends React.Component {
-    render() {
+export default class Login extends BasePage {
+    pageRender() {
         return (
             <div className="login-page columns">
 
