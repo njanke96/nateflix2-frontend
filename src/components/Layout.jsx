@@ -7,7 +7,7 @@ export class Layout extends React.Component {
         super(props)
         this.state = {
             // must be set when the user login status changes
-            loggedIn: false
+            loggedIn: true
         }
     }
 

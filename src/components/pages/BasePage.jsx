@@ -12,10 +12,7 @@ export default class BasePage extends React.Component {
             where message is the message, 'is' is the bulma class to
             colour the notification, without the 'is-' examples: 'warning', 'danger'
             */
-            flashMessage: {
-                message: "hello there general kenobi",
-                is: "warning"
-            }
+            flashMessage: null
         }
 
         // bind event callbacks
@@ -40,9 +37,7 @@ export default class BasePage extends React.Component {
 
     flashDeleted() {
         // nullify flashMessage
-        this.setState((state) => {
-            return {flashMessage: null}
-        })
+        this.setState({flashMessage: null})
     }
 
     render() {
