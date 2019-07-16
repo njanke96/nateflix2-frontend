@@ -3,6 +3,7 @@ import {Switch, Route} from "react-router-dom"
 import { observer } from "mobx-react"
 
 import NotFound from "./pages/NotFound"
+import Homepage from "./pages/Homepage"
 import Login from "./pages/Login"
 import PasswordRecover from "./pages/PasswordRecover"
 
@@ -16,8 +17,9 @@ export default class Routes extends React.Component {
     render() {
         return (
             <Switch>
-                <Route exact path="/" render={this.pageComponent(Login)}/>
-                <Route path="/forgot-password" render={this.pageComponent(PasswordRecover)}/>
+                <Route exact path="/" render={this.pageComponent(Homepage)}/>
+                <Route exact path="/login" render={this.pageComponent(Login)}/>
+                <Route exact path="/forgot-password" render={this.pageComponent(PasswordRecover)}/>
                 <Route component={NotFound}/>
             </Switch>
         )

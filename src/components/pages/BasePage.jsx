@@ -1,8 +1,12 @@
 import React from 'react'
 import {observer} from "mobx-react"
 
+const PUBLIC_PAGES = [
+    "/login",
+    "/forgot-password"
+]
+
 /* Base component for pages with common functionality */
-@observer
 export default class BasePage extends React.Component {
     constructor(props) {
         super(props)
@@ -11,20 +15,19 @@ export default class BasePage extends React.Component {
         }
     }
 
+    componentDidMount() {
+        if (PUBLIC_PAGES.includes(this.props.location.pathname)) return
+
+        if (!this.props.store.loginToken) {
+            this.props.store.addFlashMessage("No login token")
+        }
+    }
+
     /* Set a full page loading state, function is just a shorthand */
     setLoadingState(loading) {
         this.setState(() => {
             return {loading}
         })
-    }
-
-    componentDidMount() {
-        // todo: check login token, if it is missing or invalid, 
-        // and we are not in public area, redirect to login with a message flash
-
-        // todo: check for message flash in localstorage and set state, use an expiry key
-
-        // todo: fuck it use redux for all this
     }
 
     flashDeleted(index) {

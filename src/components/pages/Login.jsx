@@ -47,6 +47,6 @@ export default class Login extends BasePage {
     }
 
     loginClicked() {
-        //
+        // TODO: implement
     }
 }

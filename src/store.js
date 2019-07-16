@@ -1,4 +1,4 @@
-import {observable} from "mobx"
+import {observable, action, autorun} from "mobx"
 
 export default class AppStore {
     /*
@@ -7,7 +7,26 @@ export default class AppStore {
     colour the notification, without the 'is-' examples: 'warning', 'danger'
     */
     @observable flashMessages = []
+    @observable loginToken = null
+    
+    constructor() {
+        // load a login token from storage
+        const token = localStorage.getItem("login_token")
+        if (token) {
+            this.loginToken = token
+        }
 
+        // update the localstorage login token when we update our login token
+        autorun(() => {
+            if (!this.loginToken) {
+                localStorage.removeItem("login_token")
+                return
+            }
+            localStorage.setItem("login_token", this.loginToken)
+        })
+    }
+
+    @action
     addFlashMessage(message, bulmaIs) {
         this.flashMessages.push({
             message,
@@ -15,11 +34,18 @@ export default class AppStore {
         })
     }
 
+    @action
     clearFlashMessages() {
         this.flashMessages = []
     }
 
+    @action
     removeFlashMessageAtIndex(index) {
         this.flashMessages.splice(index, 1)
+    }
+
+    @action
+    setLoginToken(value) {
+        this.loginToken = value
     }
 }
