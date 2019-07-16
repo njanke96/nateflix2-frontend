@@ -1,7 +1,9 @@
 import React from "react"
 import {BrowserRouter, Link} from "react-router-dom"
 import Routes from "./Routes"
+import { observer } from "mobx-react"
 
+@observer
 export class Layout extends React.Component {
     constructor(props) {
         super(props)
@@ -17,7 +19,7 @@ export class Layout extends React.Component {
                 <Navbar loggedIn={this.state.loggedIn}/>
                 <div className="container">
                     <section className="section main-section">
-                        <Routes />
+                        <Routes store={this.props.store}/>
                     </section>
                 </div>
             </BrowserRouter>

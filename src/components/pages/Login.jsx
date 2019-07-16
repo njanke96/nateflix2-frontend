@@ -1,8 +1,11 @@
 /* Login page shown whenever a login is required */
 import {Link} from "react-router-dom"
 import React from "react"
+import {observer} from "mobx-react"
+
 import BasePage from "./BasePage"
 
+@observer
 export default class Login extends BasePage {
     pageRender() {
         return (
@@ -25,7 +28,7 @@ export default class Login extends BasePage {
                     <div className="field is-grouped">
                         <Link to="/forgot-password">Forgot your password?</Link>
                         <p className="control pushed-control">
-                            <button className="button is-primary">Login</button>
+                            <button className="button is-primary" onClick={this.loginClicked.bind(this)}>Login</button>
                         </p>
                     </div>
                 </div>
@@ -41,5 +44,9 @@ export default class Login extends BasePage {
 
             </div>
         )
+    }
+
+    loginClicked() {
+        //
     }
 }

@@ -1,22 +1,14 @@
 import React from 'react'
+import {observer} from "mobx-react"
 
 /* Base component for pages with common functionality */
+@observer
 export default class BasePage extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             loading: false,
-
-            /* 
-            can be {message, [is]}
-            where message is the message, 'is' is the bulma class to
-            colour the notification, without the 'is-' examples: 'warning', 'danger'
-            */
-            flashMessage: null
         }
-
-        // bind event callbacks
-        this.flashDeleted = this.flashDeleted.bind(this)
     }
 
     /* Set a full page loading state, function is just a shorthand */
@@ -35,9 +27,8 @@ export default class BasePage extends React.Component {
         // todo: fuck it use redux for all this
     }
 
-    flashDeleted() {
-        // nullify flashMessage
-        this.setState({flashMessage: null})
+    flashDeleted(index) {
+        this.props.store.removeFlashMessageAtIndex(index)
     }
 
     render() {
@@ -49,28 +40,34 @@ export default class BasePage extends React.Component {
             )
         }
 
-        if (this.state.flashMessage !== null) {
-            const msg = this.state.flashMessage.message
-            const is = (this.state.flashMessage.is || null)
-            let message = null
-            if (is !== null) {
-                message = <MessageFlash onDeleted={this.flashDeleted} message={msg} is={is} />
-            } else {
-                message = <MessageFlash onDeleted={this.flashDeleted} message={msg} />
-            }
+        const messages = []
 
-            return (
-                <div>
-                    {message}
-                    {this.pageRender()}
-                </div>
-            )
+        if (this.props.store.flashMessages.length > 0) {
+            const fm = this.props.store.flashMessages
+            for (let i = 0; i < fm.length; i++) {
+                const msg = fm[i].message
+                const is = (fm[i].is || undefined)
+                messages.push(
+                    <MessageFlash
+                        key={i}
+                        index={i}
+                        onDeleted={this.flashDeleted.bind(this)}
+                        message={msg}
+                        is={is}
+                    />
+                )
+            }
         }
         
         /* 
         pageRender is implemented in subclasses instead of render
         */
-        return this.pageRender()
+        return (
+            <div>
+                {messages}
+                {this.pageRender()}
+            </div>
+        )
     }
 }
 
@@ -81,7 +78,7 @@ class MessageFlash extends React.Component {
     }
 
     deleteClicked(e) {
-        this.props.onDeleted()
+        this.props.onDeleted(this.props.index)
     }
 
     render() {
