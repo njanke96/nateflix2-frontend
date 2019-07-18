@@ -1,4 +1,8 @@
 {
-  "presets": ["@babel/env", "@babel/preset-react", "mobx"],
+  "presets": [
+    "@babel/env", 
+    "@babel/preset-react", 
+    "mobx"
+  ],
   "sourceMaps": "inline"
 }

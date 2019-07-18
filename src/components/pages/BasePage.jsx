@@ -1,5 +1,5 @@
 import React from 'react'
-import {observer} from "mobx-react"
+import {autorun} from "mobx"
 
 const PUBLIC_PAGES = [
     "/login",
@@ -8,19 +8,41 @@ const PUBLIC_PAGES = [
 
 /* Base component for pages with common functionality */
 export default class BasePage extends React.Component {
+    mounted = false
+
+    // dispose the redirect autorun when the component will unmount
+    redirectDisposer = null
+
     constructor(props) {
         super(props)
         this.state = {
-            loading: false,
+            loading: false
         }
+
+        this.redirectDisposer = autorun(() => {
+            if (this.props.store.redirectTo) {
+                const redirectTo = this.props.store.redirectTo
+                this.props.store.setRedirectTo(null)
+                this.props.history.push(redirectTo)
+            }
+        })
     }
 
     componentDidMount() {
-        if (PUBLIC_PAGES.includes(this.props.location.pathname)) return
+        this.mounted = true
 
-        if (!this.props.store.loginToken) {
-            this.props.store.addFlashMessage("No login token")
+        if (!PUBLIC_PAGES.includes(this.props.location.pathname)) {
+            if (!this.props.store.loggedIn) {
+                // private page being accessed while logged out
+                this.props.store.addFlashMessage("You must be logged in to access that page", "warning")
+                this.props.store.setRedirectTo("/login")
+            }
         }
+    }
+
+    componentWillUnmount() {
+        this.mounted = false
+        this.redirectDisposer()
     }
 
     /* Set a full page loading state, function is just a shorthand */

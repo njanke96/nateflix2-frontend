@@ -5,6 +5,10 @@ import { observer } from "mobx-react"
 import AppStore from "./store"
 import { Layout } from "./components/Layout"
 
+// this shit
+import "core-js/stable"
+import "regenerator-runtime/runtime"
+
 // import global style
 import "./style/global.scss"
 

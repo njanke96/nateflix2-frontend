@@ -4,10 +4,22 @@ import React from "react"
 import {observer} from "mobx-react"
 
 import BasePage from "./BasePage"
+import requests from "../../requests"
 
 @observer
 export default class Login extends BasePage {
+    constructor(props) {
+        super(props)
+        this.state.username = ""
+        this.state.password = ""
+        this.state.loginLoading = false
+        this.state.loginFail = false
+    }
+
     pageRender() {
+        let loginButtonClass = "button is-primary"
+        if (this.state.loginLoading) loginButtonClass += " is-loading"
+
         return (
             <div className="login-page columns">
 
@@ -16,21 +28,33 @@ export default class Login extends BasePage {
                     <div className="field">
                         <label className="label">Username</label>
                         <div className="control">
-                            <input className="input" type="text" />
+                            <input 
+                                className="input" 
+                                type="text" 
+                                onChange={ev => this.setState({username: ev.target.value})}
+                            />
                         </div>
                     </div>
                     <div className="field">
                         <label className="label">Password</label>
                         <div className="control">
-                            <input className="input" type="password" />
+                            <input 
+                                className="input" 
+                                type="password" 
+                                onChange={ev => this.setState({password: ev.target.value})}
+                            />
                         </div>
                     </div>
                     <div className="field is-grouped">
                         <Link to="/forgot-password">Forgot your password?</Link>
                         <p className="control pushed-control">
-                            <button className="button is-primary" onClick={this.loginClicked.bind(this)}>Login</button>
+                            <button className={loginButtonClass} onClick={this.loginClicked.bind(this)}>Login</button>
                         </p>
                     </div>
+                    {
+                        this.state.loginFail &&
+                        <p className="red">Invalid username/password</p>
+                    }
                 </div>
 
                 <div className="column is-8">
@@ -47,6 +71,21 @@ export default class Login extends BasePage {
     }
 
     loginClicked() {
-        // TODO: implement
+        this.setState({loginLoading: true, loginFail: false})
+
+        requests.login(this.props.store, this.state.username, this.state.password).then(token => {
+            this.setState({ loginLoading: false })
+
+            // failed login
+            if (!token) {
+                this.setState({loginFail: true})
+                return
+            }
+
+            // successful login, set token and go home
+            this.props.store.setLoginToken(token)
+            this.props.store.addFlashMessage("You have been logged in.", "success")
+            this.props.history.replace("/")
+        })
     }
 }

@@ -1,4 +1,4 @@
-import {observable, action, autorun} from "mobx"
+import {observable, action, autorun, computed} from "mobx"
 
 export default class AppStore {
     /*
@@ -8,6 +8,9 @@ export default class AppStore {
     */
     @observable flashMessages = []
     @observable loginToken = null
+
+    // if this is a string, BasePage will redirect to it.
+    @observable redirectTo = null
     
     constructor() {
         // load a login token from storage
@@ -47,5 +50,16 @@ export default class AppStore {
     @action
     setLoginToken(value) {
         this.loginToken = value
+    }
+
+    @computed
+    get loggedIn() {
+        if (this.loginToken) return true
+        return false
+    }
+
+    @action
+    setRedirectTo(path) {
+        this.redirectTo = path
     }
 }

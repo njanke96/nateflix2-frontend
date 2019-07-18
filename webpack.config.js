@@ -11,7 +11,7 @@ function getGlobalDefinitions() {
 }
 
 module.exports = {
-    entry: "./src/index.js",
+    entry: './src/index.js',
     mode: "development",
     module: {
         rules: [

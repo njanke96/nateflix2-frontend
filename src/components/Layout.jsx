@@ -5,18 +5,10 @@ import { observer } from "mobx-react"
 
 @observer
 export class Layout extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            // must be set when the user login status changes
-            loggedIn: false
-        }
-    }
-
     render() {
         return (
             <BrowserRouter>
-                <Navbar loggedIn={this.state.loggedIn}/>
+                <Navbar store={this.props.store}/>
                 <div className="container">
                     <section className="section main-section">
                         <Routes store={this.props.store}/>
@@ -27,6 +19,7 @@ export class Layout extends React.Component {
     }
 }
 
+@observer
 class Navbar extends React.Component {
     constructor(props) {
         super(props)
@@ -41,6 +34,12 @@ class Navbar extends React.Component {
                 return { burgerMenuActive: !state.burgerMenuActive }
             })
         }
+    }
+
+    logoutClicked() {
+        this.props.store.setLoginToken(null)
+        this.props.store.addFlashMessage("You have been logged out.")
+        this.props.store.setRedirectTo("/login")
     }
 
     render() {
@@ -75,7 +74,7 @@ class Navbar extends React.Component {
                     <div className="navbar-start">
                         <Link to="/" className="navbar-item">Home</Link>
                         {
-                            this.props.loggedIn &&
+                            this.props.store.loggedIn &&
                             <Link to="/movies" className="navbar-item">Movies</Link>
                         }
                         
@@ -85,8 +84,8 @@ class Navbar extends React.Component {
                         <div className="navbar-item">
                             <div className="buttons">
                                 {
-                                    this.props.loggedIn &&
-                                    <button className="button is-light">Log out</button>  
+                                    this.props.store.loggedIn &&
+                                    <button className="button is-light" onClick={this.logoutClicked.bind(this)}>Log out</button>  
                                 }        
                             </div>
                         </div>
