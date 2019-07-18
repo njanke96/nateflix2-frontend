@@ -52,8 +52,8 @@ export default class BasePage extends React.Component {
         })
     }
 
-    flashDeleted(index) {
-        this.props.store.removeFlashMessageAtIndex(index)
+    flashDeleted(id) {
+        this.props.store.removeFlashMessage(id)
     }
 
     render() {
@@ -72,10 +72,11 @@ export default class BasePage extends React.Component {
             for (let i = 0; i < fm.length; i++) {
                 const msg = fm[i].message
                 const is = (fm[i].is || undefined)
+                const id = (fm[i].id)
                 messages.push(
                     <MessageFlash
                         key={i}
-                        index={i}
+                        id={id}
                         onDeleted={this.flashDeleted.bind(this)}
                         message={msg}
                         is={is}
@@ -97,13 +98,47 @@ export default class BasePage extends React.Component {
 }
 
 class MessageFlash extends React.Component {
+    intervalId = 0
+    lifetime = 0
+    fadeAt = 4000
+    fadeTime = 2000
+
     constructor(props) {
         super(props)
         this.deleteClicked = this.deleteClicked.bind(this)
+        this.state = {
+            opacity: 100
+        }
+    }
+
+    componentDidMount() {
+        // lifetime counter with fade effect
+        this.lifetime = 0
+        const interval = 100
+        this.intervalId = setInterval(() => {
+            this.lifetime += interval
+            if (this.lifetime > this.fadeAt) {
+                const fadeTimeElapsed = this.lifetime - this.fadeAt
+                this.setState({ opacity: 1 - (fadeTimeElapsed / this.fadeTime)}, () => {
+                    if (this.lifetime >= this.fadeAt + this.fadeTime) {
+                        // done fading
+                        this.props.onDeleted(this.props.id)
+                    }
+                })
+            }
+
+        }, interval)
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.intervalId)
+        if (this.lifetime >= this.fadeAt) {
+            this.props.onDeleted(this.props.id)
+        }
     }
 
     deleteClicked(e) {
-        this.props.onDeleted(this.props.index)
+        this.props.onDeleted(this.props.id)
     }
 
     render() {
@@ -111,8 +146,12 @@ class MessageFlash extends React.Component {
         if (!this.props.message) return
         divClass = divClass + " " + ("is-" + this.props.is) || ""
 
+        let divStyle = {
+            opacity: this.state.opacity
+        }
+
         return (
-            <div className={divClass}>
+            <div className={divClass} style={divStyle}>
                 <button className="delete" onClick={this.deleteClicked}></button>
                 {this.props.message}
             </div>

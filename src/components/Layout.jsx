@@ -72,15 +72,25 @@ class Navbar extends React.Component {
 
                 <div id="topNavbar" className={navMenuClass}>
                     <div className="navbar-start">
-                        <Link to="/" className="navbar-item">Home</Link>
+                        {
+                            !this.props.store.loggedIn &&
+                            <Link to="/login" className="navbar-item">Login</Link>
+                        }
                         {
                             this.props.store.loggedIn &&
-                            <Link to="/movies" className="navbar-item">Movies</Link>
+                            [<Link key="1" to="/" className="navbar-item">Home</Link>,
+                            <Link key="2" to="/movies" className="navbar-item">Movies</Link>]
                         }
                         
                     </div>
 
                     <div className="navbar-end">
+                        {
+                            this.props.store.loggedIn &&
+                            <div className="navbar-item">
+                                Logged in as: {this.props.store.loginUsername}
+                            </div>
+                        }
                         <div className="navbar-item">
                             <div className="buttons">
                                 {

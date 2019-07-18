@@ -74,6 +74,8 @@ export default class Login extends BasePage {
         this.setState({loginLoading: true, loginFail: false})
 
         requests.login(this.props.store, this.state.username, this.state.password).then(token => {
+            if (!this.mounted) return
+
             this.setState({ loginLoading: false })
 
             // failed login
@@ -84,7 +86,7 @@ export default class Login extends BasePage {
 
             // successful login, set token and go home
             this.props.store.setLoginToken(token)
-            this.props.store.addFlashMessage("You have been logged in.", "success")
+            this.props.store.addFlashMessage("You have been logged in.")
             this.props.history.replace("/")
         })
     }

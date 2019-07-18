@@ -19,8 +19,16 @@ async function login(store, username, password) {
     return null
 }
 
+async function checkToken(store) {
+    const response = await request(store, "get", "/auth/check")
+    if (!response) return {username: "", userHasAdmin: false}
+    return response
+
+}
+
 const requests = {
-    login
+    login,
+    checkToken
 }
 export default requests
 
@@ -29,7 +37,7 @@ export default requests
 /*
 Make a request to the API
 */
-async function request(store, method, url, data = {}) {
+async function request(store, method, url, data = undefined) {
     const token = store.loginToken
     let headers = {}
     if (token) {

@@ -1,4 +1,6 @@
 import {observable, action, autorun, computed} from "mobx"
+import {sha256} from "js-sha256"
+import requests from "./requests"
 
 export default class AppStore {
     /*
@@ -8,6 +10,8 @@ export default class AppStore {
     */
     @observable flashMessages = []
     @observable loginToken = null
+    @observable loginUsername = ""
+    @observable userHasAdmin = false
 
     // if this is a string, BasePage will redirect to it.
     @observable redirectTo = null
@@ -18,6 +22,8 @@ export default class AppStore {
         if (token) {
             this.loginToken = token
         }
+
+        this._checkToken()
 
         // update the localstorage login token when we update our login token
         autorun(() => {
@@ -31,9 +37,13 @@ export default class AppStore {
 
     @action
     addFlashMessage(message, bulmaIs) {
+        const date = new Date()
         this.flashMessages.push({
             message,
-            is: bulmaIs
+            is: bulmaIs,
+
+            // unique id is hash of message plus current time
+            id: sha256(message + date.getTime())
         })
     }
 
@@ -43,13 +53,17 @@ export default class AppStore {
     }
 
     @action
-    removeFlashMessageAtIndex(index) {
-        this.flashMessages.splice(index, 1)
+    removeFlashMessage(id) {
+        for (let i = 0; i < this.flashMessages.length; i++) {
+            let fm = this.flashMessages[i]
+            if (fm.id === id) this.flashMessages.splice(i, 1)
+        }
     }
 
     @action
     setLoginToken(value) {
         this.loginToken = value
+        this._checkToken()
     }
 
     @computed
@@ -61,5 +75,18 @@ export default class AppStore {
     @action
     setRedirectTo(path) {
         this.redirectTo = path
+    }
+
+    /* Update the login details */
+    _checkToken() {
+        if (this.loginToken === null) {
+            this.loginUsername = ""
+            this.userHasAdmin = false
+        } else {
+            requests.checkToken(this).then(response => {
+                this.loginUsername = response.username
+                this.userHasAdmin = response.userHasAdmin
+            })
+        }
     }
 }
