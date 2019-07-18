@@ -100,8 +100,6 @@ export default class BasePage extends React.Component {
 class MessageFlash extends React.Component {
     intervalId = 0
     lifetime = 0
-    fadeAt = 4000
-    fadeTime = 2000
 
     constructor(props) {
         super(props)
@@ -117,22 +115,13 @@ class MessageFlash extends React.Component {
         const interval = 100
         this.intervalId = setInterval(() => {
             this.lifetime += interval
-            if (this.lifetime > this.fadeAt) {
-                const fadeTimeElapsed = this.lifetime - this.fadeAt
-                this.setState({ opacity: 1 - (fadeTimeElapsed / this.fadeTime)}, () => {
-                    if (this.lifetime >= this.fadeAt + this.fadeTime) {
-                        // done fading
-                        this.props.onDeleted(this.props.id)
-                    }
-                })
-            }
-
         }, interval)
     }
 
     componentWillUnmount() {
         clearInterval(this.intervalId)
-        if (this.lifetime >= this.fadeAt) {
+        if (this.lifetime >= 2000) {
+            // assume the user saw it after 2 seconds
             this.props.onDeleted(this.props.id)
         }
     }
