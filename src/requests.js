@@ -23,12 +23,32 @@ async function checkToken(store) {
     const response = await request(store, "get", "/auth/check")
     if (!response) return {username: "", userHasAdmin: false}
     return response
+}
 
+/* Returns success bool */
+async function recoverPassword(store, email, url) {
+    const body = {
+        email,
+        url
+    }
+    const response = await request(store, "post", "auth/resetpassword", body)
+    if (!response) return false
+    return response.success
+}
+
+/* Returns success bool */
+async function resetPassword(store, resetToken, newPassword) {
+    const body = {resetToken, newPassword: hashPass(newPassword)}
+    const response = await request(store, "patch", "auth/resetpassword", body)
+    if (!response) return false
+    return response.success
 }
 
 const requests = {
     login,
-    checkToken
+    checkToken,
+    recoverPassword,
+    resetPassword
 }
 export default requests
 
@@ -48,13 +68,6 @@ async function request(store, method, url, data = undefined) {
         const resp = await ax.request({ url, method, headers, data })
         return resp.data
     } catch (err) {
-        if (store.loggedIn) {
-            // user was "logged in"
-            store.addFlashMessage("You have been logged out. Please log back in.", "warning")
-            store.setLoginToken(null)
-            store.setRedirectTo("/login")
-        }
-
         if (err.response) {
             if (err.response.status !== 403) {
                 // Unexpected response status, log it
@@ -65,6 +78,14 @@ async function request(store, method, url, data = undefined) {
                     ". Response body: \"" + JSON.stringify(err.response.data || "{}") + 
                     "\". Config used: \"" + JSON.stringify(err.response.config) + "\""
                 )
+            } else {
+                // 403 error, assume expired token
+                if (store.loggedIn) {
+                    // user was "logged in"
+                    store.addFlashMessage("You have been logged out. Please log back in.", "warning")
+                    store.setLoginToken(null)
+                    store.setRedirectTo("/login")
+                }
             }
         } else {
             // unknown error, log it
