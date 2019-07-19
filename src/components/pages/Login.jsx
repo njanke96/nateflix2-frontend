@@ -16,6 +16,12 @@ export default class Login extends BasePage {
         this.state.loginFail = false
     }
 
+    formKeyDown(e) {
+        if (e.key === "Enter") {
+            this.loginClicked()
+        }
+    }
+
     pageRender() {
         let loginButtonClass = "button is-primary"
         if (this.state.loginLoading) loginButtonClass += " is-loading"
@@ -25,36 +31,39 @@ export default class Login extends BasePage {
 
                 <div className="column is-4">
                     <h1 className="title">Login</h1>
-                    <div className="field">
-                        <label className="label">Username</label>
-                        <div className="control">
-                            <input 
-                                className="input" 
-                                type="text" 
-                                onChange={ev => this.setState({username: ev.target.value})}
-                            />
+                    <div className="login-form" onKeyDown={this.formKeyDown.bind(this)}>
+                        <div className="field">
+                            <label className="label">Username</label>
+                            <div className="control">
+                                <input
+                                    className="input"
+                                    type="text"
+                                    onChange={ev => this.setState({ username: ev.target.value })}
+                                />
+                            </div>
                         </div>
-                    </div>
-                    <div className="field">
-                        <label className="label">Password</label>
-                        <div className="control">
-                            <input 
-                                className="input" 
-                                type="password" 
-                                onChange={ev => this.setState({password: ev.target.value})}
-                            />
+                        <div className="field">
+                            <label className="label">Password</label>
+                            <div className="control">
+                                <input
+                                    className="input"
+                                    type="password"
+                                    onChange={ev => this.setState({ password: ev.target.value })}
+                                />
+                            </div>
                         </div>
+                        <div className="field is-grouped">
+                            <Link to="/forgot-password">Forgot your password?</Link>
+                            <p className="control pushed-control">
+                                <button className={loginButtonClass} onClick={this.loginClicked.bind(this)}>Login</button>
+                            </p>
+                        </div>
+                        {
+                            this.state.loginFail &&
+                            <p className="red">Invalid username/password</p>
+                        }
                     </div>
-                    <div className="field is-grouped">
-                        <Link to="/forgot-password">Forgot your password?</Link>
-                        <p className="control pushed-control">
-                            <button className={loginButtonClass} onClick={this.loginClicked.bind(this)}>Login</button>
-                        </p>
-                    </div>
-                    {
-                        this.state.loginFail &&
-                        <p className="red">Invalid username/password</p>
-                    }
+                    
                 </div>
 
                 <div className="column is-8">

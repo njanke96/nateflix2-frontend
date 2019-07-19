@@ -81,6 +81,10 @@ class Navbar extends React.Component {
                             [<Link key="1" to="/" className="navbar-item">Home</Link>,
                             <Link key="2" to="/movies" className="navbar-item">Movies</Link>]
                         }
+                        {
+                            this.props.store.userHasAdmin &&
+                            <Link to="/admin" className="navbar-item">Admin</Link>
+                        }
                         
                     </div>
 
