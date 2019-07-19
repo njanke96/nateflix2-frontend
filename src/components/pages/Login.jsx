@@ -14,6 +14,7 @@ export default class Login extends BasePage {
         this.state.password = ""
         this.state.loginLoading = false
         this.state.loginFail = false
+        this.state.title = "Login - Nateflix"
     }
 
     formKeyDown(e) {

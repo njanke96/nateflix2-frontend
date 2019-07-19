@@ -3,7 +3,8 @@ import {autorun} from "mobx"
 
 const PUBLIC_PAGES = [
     "/login",
-    "/forgot-password"
+    "/forgot-password",
+    "/reset-password"
 ]
 
 /* Base component for pages with common functionality */
@@ -16,7 +17,8 @@ export default class BasePage extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            loading: false
+            loading: false,
+            title: "Nateflix"
         }
 
         this.redirectDisposer = autorun(() => {
@@ -38,6 +40,12 @@ export default class BasePage extends React.Component {
                 this.props.store.setRedirectTo("/login")
             }
         }
+
+        document.title = this.state.title
+    }
+
+    componentDidUpdate() {
+        document.title = this.state.title
     }
 
     componentWillUnmount() {
@@ -50,6 +58,10 @@ export default class BasePage extends React.Component {
         this.setState(() => {
             return {loading}
         })
+    }
+
+    setPageTitle(title) {
+        this.setState({title})
     }
 
     flashDeleted(id) {

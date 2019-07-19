@@ -3,6 +3,11 @@ import { observer } from "mobx-react"
 
 @observer
 export default class NotFound extends React.Component {
+    constructor (props) {
+        super(props)
+        document.title = "404 - Nateflix"
+    }
+    
     render() {
         return (
             <div>

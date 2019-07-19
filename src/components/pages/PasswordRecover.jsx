@@ -4,6 +4,11 @@ import { observer } from "mobx-react"
 
 @observer
 export default class PasswordRecover extends BasePage {
+    constructor(props) {
+        super(props)
+        this.state.title = "Recover Nateflix Password"
+    }
+
     pageRender() {
         return (
             <div>

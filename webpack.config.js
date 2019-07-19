@@ -59,7 +59,8 @@ module.exports = {
             rewrites: [
                 { from: /^\/$/, to: '/index.html' }
             ]
-        }
+        },
+        inline: true
     },
     plugins: [
         new webpack.DefinePlugin(getGlobalDefinitions()),
