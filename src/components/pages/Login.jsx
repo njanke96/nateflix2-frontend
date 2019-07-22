@@ -5,6 +5,7 @@ import {observer} from "mobx-react"
 
 import BasePage from "./BasePage"
 import requests from "../../requests"
+import { log } from "util";
 
 @observer
 export default class Login extends BasePage {
@@ -15,6 +16,13 @@ export default class Login extends BasePage {
         this.state.loginLoading = false
         this.state.loginFail = false
         this.state.title = "Login - Nateflix"
+    }
+
+    componentDidMount() {
+        if (this.props.store.loggedIn) {
+            this.props.history.replace("/")
+            this.props.store.addFlashMessage("You are already logged in.")
+        }
     }
 
     formKeyDown(e) {
@@ -64,7 +72,7 @@ export default class Login extends BasePage {
                             <p className="red">Invalid username/password</p>
                         }
                     </div>
-                    
+
                 </div>
 
                 <div className="column is-8">
@@ -81,10 +89,13 @@ export default class Login extends BasePage {
     }
 
     loginClicked() {
+        if (this.state.loginLoading) return
+
         this.setState({loginLoading: true, loginFail: false})
 
         requests.login(this.props.store, this.state.username, this.state.password).then(token => {
             if (!this.mounted) return
+            
 
             this.setState({ loginLoading: false })
 

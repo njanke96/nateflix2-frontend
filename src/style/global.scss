@@ -8,8 +8,11 @@
 $primary: $orange;
 $info: $orange;
 $text: $white-ter;
+$text-strong: $white;
 $title-color: $text;
 $subtitle-color: $text;
+$border: $grey-dark;
+$border-hover: $grey-dark;
 $link: $info;
 $link-hover: $info;
 $link-focus-border: $info;
@@ -20,6 +23,9 @@ $body-background-color: $background-grey;
 
 // navbar (does not work?)
 $navbar-dropdown-background-color: $background-grey;
+
+// modal
+$modal-card-body-background-color: $grey-darker;
 
 // forms
 $label-color: $text;

@@ -44,11 +44,32 @@ async function resetPassword(store, resetToken, newPassword) {
     return response.success
 }
 
+/* returns true if completed false if not completed null if failed */
+async function getCompletedRegistration(store) {
+    const url = "users/" + store.loginUsername + "/completeregistration" 
+    const response = await request(store, "get", url)
+    if (!response) return null
+    return response.completed
+}
+
+/* returns success bool */
+async function completeRegistration(store, email, newpassword) {
+    const url = "users/" + store.loginUsername + "/completeregistration"
+    const response = await request(store, "post", url, {
+        email,
+        newpassword: hashPass(newpassword)
+    })
+    if (!response) return false
+    return response.success
+}
+
 const requests = {
     login,
     checkToken,
     recoverPassword,
-    resetPassword
+    resetPassword,
+    getCompletedRegistration,
+    completeRegistration
 }
 export default requests
 

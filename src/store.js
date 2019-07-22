@@ -9,9 +9,18 @@ export default class AppStore {
     colour the notification, without the 'is-' examples: 'warning', 'danger'
     */
     @observable flashMessages = []
+
+    // login jwt
     @observable loginToken = null
+
+    // username of logged in user
     @observable loginUsername = ""
+
+    // does logged in user have admin
     @observable userHasAdmin = false
+
+    // has the user been prompted once to complete their registration
+    @observable completeRegistrationPrompted = false
 
     // if this is a string, BasePage will redirect to it.
     @observable redirectTo = null
@@ -73,15 +82,21 @@ export default class AppStore {
     }
 
     @action
+    setCompleteRegistrationPrompted(value) {
+        this.completeRegistrationPrompted = value
+    }
+
+    @action
     setRedirectTo(path) {
         this.redirectTo = path
     }
 
-    /* Update the login details */
+    /* Update additional login states after the login token changes */
     _checkToken() {
         if (this.loginToken === null) {
             this.loginUsername = ""
             this.userHasAdmin = false
+            this.completeRegistrationPrompted = false
         } else {
             requests.checkToken(this).then(response => {
                 this.loginUsername = response.username

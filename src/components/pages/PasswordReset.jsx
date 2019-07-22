@@ -23,6 +23,13 @@ export default class PasswordReset extends BasePage {
             return
         }
 
+        if (this.state.password1.length < 1) {
+            this.setState({
+                failed: true,
+                failMessage: "Please enter a password."
+            })
+        }
+
         const resetToken = new URLSearchParams(this.props.location.search).get("resettoken")
         if (resetToken === null) {
             this.setState({failed: true, failMessage: "Missing reset token."})
