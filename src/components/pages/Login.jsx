@@ -5,7 +5,6 @@ import {observer} from "mobx-react"
 
 import BasePage from "./BasePage"
 import requests from "../../requests"
-import { log } from "util";
 
 @observer
 export default class Login extends BasePage {
@@ -19,6 +18,7 @@ export default class Login extends BasePage {
     }
 
     componentDidMount() {
+        super.componentDidMount()
         if (this.props.store.loggedIn) {
             this.props.history.replace("/")
             this.props.store.addFlashMessage("You are already logged in.")
