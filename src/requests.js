@@ -9,7 +9,7 @@ const ax = axios.create({
 async function login(store, username, password) {
     const body = {
         "username": username,
-        "password": hashPass(password)
+        "password": password
     }
 
     const response = await request(store, "post", "/auth/login", body)
@@ -38,7 +38,7 @@ async function recoverPassword(store, email, url) {
 
 /* Returns success bool */
 async function resetPassword(store, resetToken, newPassword) {
-    const body = {resetToken, newPassword: hashPass(newPassword)}
+    const body = {resetToken, newPassword: newPassword}
     const response = await request(store, "patch", "auth/resetpassword", body)
     if (!response) return false
     return response.success
@@ -57,7 +57,7 @@ async function completeRegistration(store, email, newpassword) {
     const url = "users/" + store.loginUsername + "/completeregistration"
     const response = await request(store, "post", url, {
         email,
-        newpassword: hashPass(newpassword)
+        newpassword: newpassword
     })
     if (!response) return false
     return response.success
@@ -115,8 +115,4 @@ async function request(store, method, url, data = undefined) {
 
         return null
     }
-}
-
-function hashPass(password) {
-    return sha256(password)
 }

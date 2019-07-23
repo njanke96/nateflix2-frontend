@@ -34,6 +34,11 @@ $input-border-color: $grey-darker;
 $input-hover-border-color: $grey-darker;
 $input-background-color: $background-grey;
 
+// table
+$table-color: $white-ter;
+$table-background-color: $grey-darker;
+$table-cell-border: 1px solid $grey-dark;
+
 @import "~bulma";
 
 // manually set navbar menu styles
@@ -77,4 +82,8 @@ section > a:hover {
 
 .red {
     color: $red;
+}
+
+.table-container {
+    overflow-x: auto;
 }
