@@ -4,6 +4,27 @@ import { when } from "mobx"
 import {observer} from "mobx-react"
 import { Route, Switch } from "react-router-dom"
 
+const ADMIN_ROUTES = [
+    {
+        path: "/admin/log",
+
+        // the value to be selected in the selector
+        selectorValue: "log",
+
+        // the text displayed in the selector
+        selectorText: "Activity Log",
+
+        // the component to render
+        render: () => <Test1/>
+    },
+    {
+        path: "/admin/users",
+        selectorValue: "users",
+        selectorText: "Users",
+        render: () => <Test2/>
+    }
+]
+
 @observer
 export default class Admin extends BasePage {
     constructor(props) {
@@ -31,13 +52,26 @@ export default class Admin extends BasePage {
         })
     }
 
-    componentDidUpdate() {
-        super.componentDidUpdate()
+    getPageSelector(selectedValue) {
+        return () => (
+            <AdminPageSelector selectedValue={selectedValue} onValueChange={ev => {
+                this.pageSelectorValueChange.bind(this)(ev.target.value)
+            }}/>
+        )
+    }
+
+    pageSelectorValueChange(newValue) {
+        const matchedRoutes = ADMIN_ROUTES.filter(route => route.selectorValue === newValue)
+        if (matchedRoutes.length !== 1) {
+            console.error("Failed to match a route to the admin page selector value!");
+            return
+        }
+
+        const newPath = matchedRoutes[0].path
+        this.props.history.push(newPath)
     }
 
     pageRender() {
-        // todo: find way to update the select with the current admin task
-
         return (
             <div>
                 <h1 className="title">Admin</h1>
@@ -47,13 +81,13 @@ export default class Admin extends BasePage {
                             <p>Admin Category: </p>
                         </div>
                         <div className="level-item">
-                            <div className="select">
-                                <select>
-                                    <option>Activity Log</option>
-                                    <option>Users</option>
-                                    <option>Movies</option>
-                                </select>
-                            </div>
+                            {ADMIN_ROUTES.map((route, index) => (
+                                <Route
+                                    key={index}
+                                    path={route.path}
+                                    render={this.getPageSelector(route.selectorValue)}
+                                />
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -61,12 +95,34 @@ export default class Admin extends BasePage {
                 <hr/>
 
                 <Switch>
-                    <Route path={`${this.props.match.url}/log`} component={Test1} />
-                    <Route path={`${this.props.match.url}/users`} component={Test2} />
+                    {ADMIN_ROUTES.map((route, index) => (
+                        <Route
+                            key={index}
+                            path={route.path}
+                            render={route.render}
+                        />
+                    ))}
                     <Route component={AdminDefault}/>
                 </Switch>
                 
             </div>  
+        )
+    }
+}
+
+class AdminPageSelector extends React.Component {
+    render() {
+        return (
+            <div className="select">
+                <select value={this.props.selectedValue} onChange={this.props.onValueChange}>
+                    {ADMIN_ROUTES.map((route, index) => (
+                        <option
+                            key={index}
+                            value={route.selectorValue}
+                        >{route.selectorText}</option>
+                    ))}
+                </select>
+            </div>
         )
     }
 }
