@@ -3,6 +3,7 @@ import React from "react"
 import { when } from "mobx"
 import {observer} from "mobx-react"
 import { Route, Switch, Redirect } from "react-router-dom"
+import Users from "../admin/Users"
 
 const DEFAULT_ADMIN_PATH = "/admin/log"
 const ADMIN_ROUTES = [
@@ -22,7 +23,7 @@ const ADMIN_ROUTES = [
         path: "/admin/users",
         selectorValue: "users",
         selectorText: "Users",
-        render: () => <Test2/>
+        render: () => <Users/>
     }
 ]
 
@@ -75,7 +76,6 @@ export default class Admin extends BasePage {
     pageRender() {
         return (
             <div>
-                <h1 className="title">Admin</h1>
                 <div className="level is-mobile">
                     <div className="level-left">
                         <div className="level-item">
