@@ -2,8 +2,9 @@ import BasePage from "./BasePage"
 import React from "react"
 import { when } from "mobx"
 import {observer} from "mobx-react"
-import { Route, Switch } from "react-router-dom"
+import { Route, Switch, Redirect } from "react-router-dom"
 
+const DEFAULT_ADMIN_PATH = "/admin/log"
 const ADMIN_ROUTES = [
     {
         path: "/admin/log",
@@ -15,7 +16,7 @@ const ADMIN_ROUTES = [
         selectorText: "Activity Log",
 
         // the component to render
-        render: () => <Test1/>
+        render: () => <ActivityLogPlaceholder/>
     },
     {
         path: "/admin/users",
@@ -102,7 +103,7 @@ export default class Admin extends BasePage {
                             render={route.render}
                         />
                     ))}
-                    <Route component={AdminDefault}/>
+                    <Route render={() => <Redirect to={DEFAULT_ADMIN_PATH} push={false}/>}/>
                 </Switch>
                 
             </div>  
@@ -127,23 +128,9 @@ class AdminPageSelector extends React.Component {
     }
 }
 
-class AdminDefault extends React.Component {
-    constructor(props) {
-        super(props)
-
-        // default redirect
-        this.props.history.replace("/admin/log")
-        
-    }
-
+class ActivityLogPlaceholder extends React.Component {
     render() {
-        return []
-    }
-}
-
-class Test1 extends React.Component {
-    render() {
-        return <p>Test1</p>
+        return <p>Activity Log to be Implemented</p>
     }
 }
 
