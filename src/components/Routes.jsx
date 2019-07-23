@@ -7,6 +7,7 @@ import Homepage from "./pages/Homepage"
 import Login from "./pages/Login"
 import PasswordRecover from "./pages/PasswordRecover"
 import PasswordReset from "./pages/PasswordReset"
+import Admin from "./pages/Admin"
 
 @observer
 export default class Routes extends React.Component {
@@ -22,6 +23,7 @@ export default class Routes extends React.Component {
                 <Route exact path="/login" render={this.pageComponent(Login)}/>
                 <Route exact path="/forgot-password" render={this.pageComponent(PasswordRecover)}/>
                 <Route exact path="/reset-password" render={this.pageComponent(PasswordReset)}/>
+                <Route path="/admin" render={this.pageComponent(Admin)}/>
                 <Route component={NotFound}/>
             </Switch>
         )

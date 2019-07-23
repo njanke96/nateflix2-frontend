@@ -25,7 +25,7 @@ export default class Homepage extends BasePage {
         // already prompted to complete reg (this session)
         if (this.props.store.completeRegistrationPrompted) return
         
-        if (this.props.store.loginUsername === "") {
+        if (!this.props.store.tokenVerified) {
             // retry
             let retries = retryCount + 1
             setTimeout(() => {

@@ -76,6 +76,12 @@ export default class AppStore {
     }
 
     @computed
+    get tokenVerified() {
+        // current implementation is simply to check if the username is not empty
+        return this.loginUsername !== ""
+    }
+
+    @computed
     get loggedIn() {
         if (this.loginToken) return true
         return false
@@ -99,8 +105,10 @@ export default class AppStore {
             this.completeRegistrationPrompted = false
         } else {
             requests.checkToken(this).then(response => {
-                this.loginUsername = response.username
                 this.userHasAdmin = response.userHasAdmin
+
+                // set this last because of the way mobx monitors observables
+                this.loginUsername = response.username
             })
         }
     }

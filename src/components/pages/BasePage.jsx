@@ -72,7 +72,7 @@ export default class BasePage extends React.Component {
         if (this.state.loading) {
             return (
                 <div className="is-centered">
-                    <i class="fa fa-spin fa-2x fa-circle-o-notch" aria-hidden="true"></i>
+                    <i className="fa fa-spin fa-2x fa-circle-o-notch" aria-hidden="true"></i>
                 </div>
             )
         }
