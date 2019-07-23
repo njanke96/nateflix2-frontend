@@ -36,6 +36,8 @@ export default class Admin extends BasePage {
     }
 
     pageRender() {
+        // todo: find way to update the select with the current admin task
+
         return (
             <div>
                 <h1 className="title">Admin</h1>
