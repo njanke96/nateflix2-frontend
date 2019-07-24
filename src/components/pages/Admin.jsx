@@ -5,6 +5,12 @@ import {observer} from "mobx-react"
 import { Route, Switch, Redirect } from "react-router-dom"
 import Users from "../admin/Users"
 
+class ActivityLogPlaceholder extends React.Component {
+    render() {
+        return <p>Activity Log to be Implemented</p>
+    }
+}
+
 const DEFAULT_ADMIN_PATH = "/admin/log"
 const ADMIN_ROUTES = [
     {
@@ -17,15 +23,26 @@ const ADMIN_ROUTES = [
         selectorText: "Activity Log",
 
         // the component to render
-        render: () => <ActivityLogPlaceholder/>
+        render: getRenderer(ActivityLogPlaceholder)
     },
     {
         path: "/admin/users",
         selectorValue: "users",
         selectorText: "Users",
-        render: () => <Users/>
+        render: getRenderer(Users)
     }
 ]
+
+/* Get a render function which passes the mobx store */
+function getRenderer(component) {
+    // javascript is so much fun /s
+    return (store) => (props) => {
+        return React.createElement(component, {
+            store: store,
+            ...props
+        }, null)
+    }
+}
 
 @observer
 export default class Admin extends BasePage {
@@ -100,7 +117,7 @@ export default class Admin extends BasePage {
                         <Route
                             key={index}
                             path={route.path}
-                            render={route.render}
+                            render={route.render(this.props.store)}
                         />
                     ))}
                     <Route render={() => <Redirect to={DEFAULT_ADMIN_PATH} push={false}/>}/>
@@ -125,12 +142,6 @@ class AdminPageSelector extends React.Component {
                 </select>
             </div>
         )
-    }
-}
-
-class ActivityLogPlaceholder extends React.Component {
-    render() {
-        return <p>Activity Log to be Implemented</p>
     }
 }
 

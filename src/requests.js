@@ -63,20 +63,28 @@ async function completeRegistration(store, email, newpassword) {
     return response.success
 }
 
+/* Returns array of user documents */
+async function getAllUsers(store) {
+    const response = await request(store, "get", "/users")
+    if (!response) return []
+    return response
+}
+
 const requests = {
     login,
     checkToken,
     recoverPassword,
     resetPassword,
     getCompletedRegistration,
-    completeRegistration
+    completeRegistration,
+    getAllUsers
 }
 export default requests
 
 /* Utilities */
 
 /*
-Make a request to the API
+Make a request to the API, returns null on fail
 */
 async function request(store, method, url, data = undefined) {
     const token = store.loginToken
