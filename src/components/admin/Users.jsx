@@ -47,6 +47,8 @@ export default class Users extends BaseAdminPage {
         }
 
         this.setState({removeConfirm: {active: false, user: ""}})
+
+        // TODO: reload
     }
 
     pageRender() {
@@ -106,7 +108,7 @@ class UserActions extends React.Component {
 
     render() {
         return (
-            <span className="action-buttons">
+            <span className="action-buttons is-flex-mobile">
                 <button className="button is-primary is-small" onClick={this.editClicked.bind(this)}>Edit</button>
                 <button className="button is-warning is-small" onClick={this.removeClicked.bind(this)}>Remove</button>
             </span>
