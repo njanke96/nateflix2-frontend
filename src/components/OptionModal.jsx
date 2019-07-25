@@ -64,10 +64,20 @@ export default class OptionModal extends React.Component {
                         <p className="modal-card-title">{this.title}</p>
                     </header>
                     <section className="modal-card-body">
-                        {this.body}
+                        {
+                            this.props.loading ? (
+                                <div className="is-centered">
+                                    <i className="fa fa-spin fa-2x fa-circle-o-notch" aria-hidden="true"></i>
+                                </div>
+                            ) : this.body
+                        }
                     </section>
                     <footer className="modal-card-foot">
-                        {this.renderOptions.bind(this)()}
+                        {
+                            this.props.loading ? (
+                                <p></p>
+                            ) : this.renderOptions.bind(this)()
+                        }
                     </footer>
                 </div>
             </div>

@@ -21,6 +21,13 @@ export default class BaseAdminPage extends React.Component {
         this.mounted = false
     }
 
+    setStatusMessage(message, warning=false) {
+        this.setState({
+            statusMessage: message,
+            statusMessageWarning: warning
+        })
+    }
+
     render() {
         if (this.state.loading) {
             return (
@@ -35,6 +42,8 @@ export default class BaseAdminPage extends React.Component {
             let cls = "tag"
             if (this.state.statusMessageWarning) {
                 cls += " is-warning"
+            } else {
+                cls += " is-success"
             }
             status = (
                 <div className="splitter">

@@ -63,6 +63,27 @@ async function completeRegistration(store, email, newpassword) {
     return response.success
 }
 
+/* returns user object or null */
+async function getUser(store, username) {
+    const response = await request(store, "get", `/users/${username}`)
+    if (!response) return null
+    return response
+}
+
+/* Returns success bool */
+async function postUser(store, username, newUser) {
+    const response = await request(store, "post", `/users/${username}`, newUser)
+    if (!response) return false
+    return response.success
+}
+
+/* Returns success bool */
+async function deleteUser(store, username) {
+    const response = await request(store, "delete", `/users/${username}`)
+    if (!response) return false
+    return response.success
+}
+
 /* Returns array of user documents */
 async function getAllUsers(store) {
     const response = await request(store, "get", "/users")
@@ -77,6 +98,9 @@ const requests = {
     resetPassword,
     getCompletedRegistration,
     completeRegistration,
+    getUser,
+    postUser,
+    deleteUser,
     getAllUsers
 }
 export default requests
