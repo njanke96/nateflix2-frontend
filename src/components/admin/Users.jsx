@@ -8,6 +8,7 @@ export default class Users extends BaseAdminPage {
     constructor(props) {
         super(props)
         this.state.users = []
+        this.state.addUserActive = false
         this.state.editUser = {
             active: false,
             user: ""
@@ -86,6 +87,12 @@ export default class Users extends BaseAdminPage {
 
     }
 
+    onAddUserSaved(success) {
+        this.setState({addUserActive: false})
+        success ? this.setStatusMessage("User added.") : this.setStatusMessage("User could not be added.", true)
+        this.reloadUserData()
+    }
+
     pageRender() {
         return (
             <div>
@@ -104,6 +111,14 @@ export default class Users extends BaseAdminPage {
                             onSave={this.onEditSaved.bind(this)}
                             onCancel={this.onEditCancelled.bind(this)}
                             store={this.props.store}
+                        />
+                }
+                {
+                    this.state.addUserActive &&
+                        <AddUserModal
+                            store={this.props.store}
+                            onAdd={this.onAddUserSaved.bind(this)}
+                            onCancel={() => this.setState({addUserActive: false})}
                         />
                 }
                 <div className="table-container">
@@ -137,6 +152,14 @@ export default class Users extends BaseAdminPage {
                             }
                         </tbody>
                     </table>
+                    <span className="action-buttons is-flex-mobile">
+                        <button 
+                            className="button is-primary" 
+                            onClick={() => this.setState({addUserActive: true})}
+                        >
+                            New User
+                        </button>
+                    </span>
                 </div>
             </div>
         )
@@ -276,6 +299,78 @@ class UserEditModal extends React.Component {
                     </section>
                     <footer className="modal-card-foot">
                         <button className={saveBtnClass} onClick={this.onConfirm.bind(this)}>Save</button>
+                        <button className="button" onClick={this.props.onCancel}>Cancel</button>
+                    </footer>
+                </div>
+            </div>
+        )
+    }
+}
+
+class AddUserModal extends React.Component {
+    mounted = false
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            loading: false,
+            username: "",
+            password: ""
+        }
+    }
+
+    componentDidMount() {
+        this.mounted = true
+    }
+
+    componentWillUnmount() {
+        this.mounted = false
+    }
+
+    onAdd() {
+        this.setState({loading: true})
+        requests.register(this.props.store, this.state.username, this.state.password).then(result => {
+            if (!this.mounted) return
+
+            this.setState({loading: false})
+            this.props.onAdd(result)
+        })
+    }
+
+    render () {
+        return (
+            <div className="modal is-active">
+                <div className="modal-background"></div>
+                <div className="modal-card">
+                    <header className="modal-card-head">
+                        <p className="modal-card-title">Add New User</p>
+                    </header>
+                    <section className="modal-card-body">
+                        <div className="field">
+                            <label className="label">Username</label>
+                            <div className="control">
+                                <input
+                                    type="text"
+                                    className="input"
+                                    onChange={ev => this.setState({ username: ev.target.value })} />
+                            </div>
+                        </div>
+                        <div className="field">
+                            <label className="label">Initial Password</label>
+                            <div className="control">
+                                <input
+                                    type="text"
+                                    className="input"
+                                    onChange={ev => this.setState({ password: ev.target.value })} />
+                            </div>
+                        </div>
+                        <p>
+                            The first time a new user signs in, they will be prompted to enter their 
+                            e-mail and a new password.
+                        </p>
+                    </section>
+                    <footer className="modal-card-foot">
+                        <button className="button is-primary" onClick={this.onAdd.bind(this)}>Add</button>
                         <button className="button" onClick={this.props.onCancel}>Cancel</button>
                     </footer>
                 </div>

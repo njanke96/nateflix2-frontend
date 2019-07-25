@@ -19,10 +19,21 @@ async function login(store, username, password) {
     return null
 }
 
+/* Returns {username, userHasAdmin} */
 async function checkToken(store) {
     const response = await request(store, "get", "/auth/check")
     if (!response) return {username: "", userHasAdmin: false}
     return response
+}
+
+/* Returns Success bool */
+async function register(store, username, password) {
+    const response = await request(store, "post", "/auth/register", {
+        username,
+        password
+    })
+    if (!response) return false
+    return response.success
 }
 
 /* Returns success bool */
@@ -94,6 +105,7 @@ async function getAllUsers(store) {
 const requests = {
     login,
     checkToken,
+    register,
     recoverPassword,
     resetPassword,
     getCompletedRegistration,
